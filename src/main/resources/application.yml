@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: MedicalWebsite
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/medicalwebsite_db
+    username: postgres
+    password: java
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+logging:
+  level:
+    org:
+      springframework:
+      security: DEBUG
+
+storageLocation: C:\Java\JAVA\Internship\

@@ -1,0 +1,25 @@
+CREATE TABLE form_043
+(
+    id                                    UUID PRIMARY KEY,
+    user_id                               UUID      NOT NULL,
+    card_number                           VARCHAR   NOT NULL,
+    observation_start_date                TIMESTAMP NOT NULL,
+    observation_end_date                  TIMESTAMP NOT NULL,
+    full_name                             VARCHAR   NOT NULL,
+    birth_date                            TIMESTAMP NOT NULL,
+    address                               VARCHAR   NOT NULL,
+    study_or_workplace                    VARCHAR   NOT NULL,
+    main_diagnosis                        VARCHAR   NOT NULL,
+    concomitant_disease                   VARCHAR   NOT NULL,
+    allergic_history                      VARCHAR   NOT NULL,
+    complaints                            VARCHAR   NOT NULL,
+    history_of_present_illness            VARCHAR   NOT NULL,
+    personal_history                      VARCHAR   NOT NULL,
+    external_examination                  VARCHAR   NOT NULL,
+    oral_cavity_and_teeth                 VARCHAR   NOT NULL,
+    condition_of_oral_mucosa_periodontium VARCHAR   NOT NULL,
+    radiological_and_other_examinations   VARCHAR   NOT NULL,
+    date                                  TIMESTAMP NOT NULL,
+    complaints_objectively                VARCHAR   NOT NULL,
+    diagnosis_or_treatment                VARCHAR   NOT NULL
+)

@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/V1_create_users.sql
+
+  - include:
+      file: db/migration/V2_create_service.sql
+
+  - include:
+      file: db/migration/V3_create_appointments.sql
+
+  - include:
+      file: db/migration/V4_create_files.sql
+  - changeSet:
+      id: 0
+      author: admin
+      changes:
+        -
