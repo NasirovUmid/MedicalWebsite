@@ -1,7 +1,7 @@
 package com.pm.medicalwebsite.security.user;
 
-import com.example.generated.enums.UserRole;
 import com.pm.medicalwebsite.entity.UsersEntity;
+import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
+@Getter
 public class UserCustomDetails implements UserDetails {
 
     private final UsersEntity usersEntity;

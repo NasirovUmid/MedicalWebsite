@@ -5,12 +5,15 @@ import com.pm.medicalwebsite.dto.requestdtos.CreateAppointmentsRequestDto;
 import com.pm.medicalwebsite.dto.requestdtos.CreateMedicalRecordsDto;
 import com.pm.medicalwebsite.dto.responsedtos.AppointmentsResponseDto;
 import com.pm.medicalwebsite.dto.responsedtos.MedicalRecordsResponseDto;
+import com.pm.medicalwebsite.dto.responsedtos.UsersResponseDto;
+import com.pm.medicalwebsite.security.user.UserCustomDetails;
 import com.pm.medicalwebsite.usecase.AppointmentsUseCase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -54,7 +57,6 @@ public class AppointmentsController {
         return ResponseEntity.ok().body(medicalRecordsResponseDto);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping
     public Page<AppointmentsResponseDto> getAppointmentsPage(
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -64,6 +66,25 @@ public class AppointmentsController {
     ) {
 
         return appointmentsUseCase.getAppointmentsPage(size, page, sort, appointmentsFilterDto);
+    }
+
+    @GetMapping("/me")
+    public Page<AppointmentsResponseDto> getPersonalAppointments(
+            @AuthenticationPrincipal UserCustomDetails userCustomDetails,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
+
+        return appointmentsUseCase.getPersonalAppointments(userCustomDetails, page, size);
+
+    }
+
+    @GetMapping("/me/upcoming")
+    public ResponseEntity<AppointmentsResponseDto> getUpcomingAppointment(@AuthenticationPrincipal UserCustomDetails userCustomDetails) {
+
+        AppointmentsResponseDto upcomingAppointment = appointmentsUseCase.getUpcomingAppointment(userCustomDetails);
+
+        return ResponseEntity.ok().body(upcomingAppointment);
     }
 
     @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'ADMIN')")

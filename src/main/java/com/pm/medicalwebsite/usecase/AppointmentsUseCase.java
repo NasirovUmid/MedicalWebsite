@@ -8,7 +8,9 @@ import com.pm.medicalwebsite.dto.requestdtos.CreateMedicalRecordsDto;
 import com.pm.medicalwebsite.dto.responsedtos.AppointmentsResponseDto;
 import com.pm.medicalwebsite.dto.responsedtos.MedicalRecordsResponseDto;
 import com.pm.medicalwebsite.entity.AppointmentsEntity;
+import com.pm.medicalwebsite.entity.UsersEntity;
 import com.pm.medicalwebsite.enums.fields.AppointmentsFields;
+import com.pm.medicalwebsite.security.user.UserCustomDetails;
 import com.pm.medicalwebsite.specifications.AppointmentsSpecification;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -86,5 +88,17 @@ public class AppointmentsUseCase {
 
     public void cancelAppointment(UUID id) {
         appointmentsDatasource.cancelAppointment(id);
+    }
+
+    public Page<AppointmentsResponseDto> getPersonalAppointments(UserCustomDetails userCustomDetails, int page, int size) {
+
+        UUID userId = userCustomDetails.getUsersEntity().getId();
+        Pageable pageable = PageRequest.of(page, size);
+
+        return appointmentsDatasource.getAppointmentsEntitiesByPatientId(userId, pageable);
+    }
+
+    public AppointmentsResponseDto getUpcomingAppointment(UserCustomDetails userCustomDetails) {
+        return appointmentsDatasource.getUpcomingAppointment(userCustomDetails.getUsersEntity().getId());
     }
 }

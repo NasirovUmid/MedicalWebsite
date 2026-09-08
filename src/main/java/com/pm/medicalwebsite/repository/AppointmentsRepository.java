@@ -1,6 +1,7 @@
 package com.pm.medicalwebsite.repository;
 
 import com.pm.medicalwebsite.entity.AppointmentsEntity;
+import com.pm.medicalwebsite.entity.UsersEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +21,11 @@ public interface AppointmentsRepository extends JpaRepository<AppointmentsEntity
     AppointmentsEntity save(AppointmentsEntity appointmentsEntity);
 
     Page<AppointmentsEntity> findAll(Specification<AppointmentsEntity> specification, Pageable pageable);
+
+    @Query(value = "SELECT * FROM appointments WHERE patient_id = :userId AND appointment_date > now() AND status = 'SCHEDULED'", nativeQuery = true)
+    Optional<AppointmentsEntity> getUpcomingAppointment(@Param("userId") UUID userId);
+
+    Page<AppointmentsEntity> getAppointmentsEntitiesByPatientId(UUID patientId, Pageable pageable);
 
     @Modifying
     @Query(value = "UPDATE appointments SET status = 'CANCELLED' WHERE id = :id", nativeQuery = true)

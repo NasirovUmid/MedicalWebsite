@@ -11,6 +11,9 @@ public interface AppointmentsDao {
 
     Page<AppointmentsEntity> findAll(Specification<AppointmentsEntity> specification, Pageable pageable);
 
+    Page<AppointmentsEntity> getAppointmentsEntitiesByPatientId(UUID patientId, Pageable pageable);
+
+    AppointmentsEntity getUpcomingAppointment(UUID userId);
 
     void cancelAppointment(UUID id);
 

@@ -33,6 +33,16 @@ public class AppointmentsDatasourceImpl implements AppointmentsDatasource {
     }
 
     @Override
+    public Page<AppointmentsResponseDto> getAppointmentsEntitiesByPatientId(UUID patientId, Pageable pageable) {
+        return appointmentsDao.getAppointmentsEntitiesByPatientId(patientId, pageable).map(appointmentsMapper::toDto);
+    }
+
+    @Override
+    public AppointmentsResponseDto getUpcomingAppointment(UUID usersId) {
+        return appointmentsMapper.toDto(appointmentsDao.getUpcomingAppointment(usersId));
+    }
+
+    @Override
     public void cancelAppointment(UUID id) {
         appointmentsDao.cancelAppointment(id);
     }

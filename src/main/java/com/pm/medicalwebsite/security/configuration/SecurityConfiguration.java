@@ -26,16 +26,19 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "DOCTOR")
 
                                 .requestMatchers(HttpMethod.POST, "/appointments/**").hasAnyRole("ADMIN", "DOCTOR")
-                                .requestMatchers(HttpMethod.GET, "/appointments/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/appointments/**").hasAnyRole("ADMIN", "DOCTOR")
 
                                 .requestMatchers(HttpMethod.POST, "/services/**").hasAnyRole("ADMIN", "DOCTOR")
                                 .requestMatchers(HttpMethod.GET, "/services/**").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "auth/**").authenticated()
 
+                                .requestMatchers(HttpMethod.POST, "/form043/**").hasAnyRole("ADMIN", "DOCTOR")
+                                .requestMatchers(HttpMethod.GET, "/form043/**").hasAnyRole("ADMIN", "DOCTOR")
+
+                                .requestMatchers(HttpMethod.POST, "/users/**").hasAnyRole("ADMIN", "DOCTOR")
                                 .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "DOCTOR"))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
