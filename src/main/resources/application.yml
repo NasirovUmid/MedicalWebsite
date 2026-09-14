@@ -21,4 +21,6 @@ logging:
       springframework:
       security: DEBUG
 
-storageLocation: C:\Java\JAVA\Internship\
+JWT_SECRET: Wvx1pRViDmdXq1f3Lmq3YUbUre2IXx4Hm0njaCNWYtCRHOy8DdO03RwXPJd
+
+storageLocation: C:\Java\JAVA\Internship\MedicalWebsite\files

@@ -9,6 +9,7 @@ import com.pm.medicalwebsite.mapper.MedicalRecordsMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -27,7 +28,7 @@ public class MedicalRecordsDatasourceImpl implements MedicalRecordsDatasource {
                         createMedicalRecordsDto.diagnosis(),
                         createMedicalRecordsDto.treatment(),
                         createMedicalRecordsDto.comment(),
-                        null
+                        Instant.now()
                 )
         ));
     }

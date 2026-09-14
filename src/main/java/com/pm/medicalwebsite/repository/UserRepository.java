@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<UsersEntity, UUID> {
 
     Optional<UsersEntity> findById(UUID id);
 
-    boolean existsPhoneNumber(String phoneNumber);
+    boolean existsByPhoneNumber(String phoneNumber);
 
     Optional<UsersEntity> getUsersEntityByEmail(String email);
 

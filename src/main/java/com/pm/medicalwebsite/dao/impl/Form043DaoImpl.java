@@ -30,4 +30,9 @@ public class Form043DaoImpl implements Form043Dao {
     public Form043Entity getForm043ById(UUID id) {
         return form043Repository.getForm043EntityById(id).orElseThrow(() -> new NotFoundException(ErrorMessages.FORM_043_NOT_FOUND.getMessage()));
     }
+
+    @Override
+    public boolean existsByUserId(UUID userId) {
+        return form043Repository.existsByUserId(userId);
+    }
 }

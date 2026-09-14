@@ -16,5 +16,5 @@ public interface Form043Repository extends JpaRepository<Form043Entity, UUID> {
 
     Optional<Form043Entity> getForm043EntityById(UUID id);
 
-
+    boolean existsByUserId(UUID userId);
 }

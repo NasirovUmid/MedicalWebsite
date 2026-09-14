@@ -7,6 +7,7 @@ import com.pm.medicalwebsite.dto.requestdtos.CreateUserRequestDto;
 import com.pm.medicalwebsite.dto.requestdtos.LoginRequestDto;
 import com.pm.medicalwebsite.dto.requestdtos.RefreshTokenRequestDto;
 import com.pm.medicalwebsite.dto.responsedtos.JwtAuthenticationResponseDto;
+import com.pm.medicalwebsite.dto.responsedtos.UsersResponseDto;
 import com.pm.medicalwebsite.entity.RefreshTokenEntity;
 import com.pm.medicalwebsite.entity.UsersEntity;
 import com.pm.medicalwebsite.enums.ErrorMessages;
@@ -50,12 +51,12 @@ public class AuthUseCase {
             throw new AlreadyExistsException(ErrorMessages.USER_ALREADY_EXISTS, createUserRequestDto.email());
         }
 
-        UsersEntity usersEntity = usersDatasource.save(createUserRequestDto);
+        UsersResponseDto usersResponseDto = usersDatasource.save(createUserRequestDto);
 
-        JwtAuthenticationResponseDto jwtAuthenticationResponseDto = jwtUseCase.generateAuthToken(usersEntity.getId(), usersEntity.getEmail());
+        JwtAuthenticationResponseDto jwtAuthenticationResponseDto = jwtUseCase.generateAuthToken(usersResponseDto.id(), usersResponseDto.email());
 
         refreshTokenDatasource.save(RefreshTokenEntity.builder()
-                .userId(usersEntity.getId())
+                .userId(usersResponseDto.id())
                 .refreshToken(hashing(jwtAuthenticationResponseDto.refreshToken()))
                 .expiryDate(Instant.now().plus(DURATION_OF_REFRESH_TOKEN))
                 .build());

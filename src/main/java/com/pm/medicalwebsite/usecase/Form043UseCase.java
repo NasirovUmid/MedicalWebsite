@@ -5,7 +5,6 @@ import com.pm.medicalwebsite.dto.requestdtos.CreateForm043Dto;
 import com.pm.medicalwebsite.dto.responsedtos.Form043ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
 
@@ -28,5 +27,11 @@ public class Form043UseCase {
     public Form043ResponseDto getForm043ById(UUID id) {
 
         return form043Datasource.getForm043ById(id);
+    }
+
+    public Boolean checkOut(UUID userId) {
+
+        return form043Datasource.existsByUserId(userId);
+
     }
 }

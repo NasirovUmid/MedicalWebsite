@@ -2,7 +2,9 @@ package com.pm.medicalwebsite.datasource.impl;
 
 import com.pm.medicalwebsite.dao.FilesDao;
 import com.pm.medicalwebsite.datasource.FilesDatasource;
+import com.pm.medicalwebsite.dto.responsedtos.FilesResponseDto;
 import com.pm.medicalwebsite.entity.FilesEntity;
+import com.pm.medicalwebsite.mapper.FilesMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class FilesDatasourceImpl implements FilesDatasource {
 
     private final FilesDao filesDao;
+    private final FilesMapper filesMapper;
 
     @Override
     public FilesEntity findByFileName(String fileName) {
@@ -18,7 +21,7 @@ public class FilesDatasourceImpl implements FilesDatasource {
     }
 
     @Override
-    public FilesEntity save(FilesEntity filesEntity) {
-        return filesDao.save(filesEntity);
+    public FilesResponseDto save(FilesEntity filesEntity) {
+        return filesMapper.toDto(filesDao.save(filesEntity));
     }
 }

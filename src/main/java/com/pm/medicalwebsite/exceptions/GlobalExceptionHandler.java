@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> handleAlreadyExistsException(AlreadyExistsException alreadyExistsException, HttpServletRequest request) {
 
-        log.error("Not found = {} ", alreadyExistsException.getMessage());
+        log.error("Already exists = {} ", alreadyExistsException.getMessage());
 
         return ResponseEntity.status(409).body(ApiProblem.of(HttpStatus.CONFLICT, alreadyExistsException.getMessage(), request, alreadyExistsException,
                 null, alreadyExistsException.getValue())

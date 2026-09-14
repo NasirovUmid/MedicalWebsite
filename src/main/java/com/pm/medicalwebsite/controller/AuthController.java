@@ -9,7 +9,6 @@ import com.pm.medicalwebsite.usecase.AuthUseCase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,6 @@ public class AuthController {
         return ResponseEntity.status(201).body(jwtAuthenticationResponseDto);
     }
 
-    @PreAuthorize("hasAnyRole('PATIENT','DOCTOR','ADMIN')")
     @PostMapping("/login")
     public ResponseEntity<JwtAuthenticationResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) throws Exception {
 

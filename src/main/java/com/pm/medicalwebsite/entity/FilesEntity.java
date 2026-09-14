@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -23,12 +25,20 @@ public class FilesEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private UUID appointmentId;
+
+    private UUID userId;
+
     private String fileName;
 
     private String storagePath;
 
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private FileType type;
 
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private FilePurpose purpose;
 
     private Integer size;

@@ -14,7 +14,7 @@ public interface UsersDatasource {
 
     boolean existsByEmail(String email);
 
-    UsersEntity save(CreateUserRequestDto userRequestDto);
+    UsersResponseDto save(CreateUserRequestDto userRequestDto);
 
     UsersEntity save(UsersEntity usersEntity);
 

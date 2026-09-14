@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public record FilesResponseDto(
         UUID id,
+        UUID appointmentId,
+        UUID userId,
         String fileName,
         FileType type,
         FilePurpose purpose,

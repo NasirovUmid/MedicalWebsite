@@ -1,12 +1,14 @@
 package com.pm.medicalwebsite.entity;
 
-import com.pm.medicalwebsite.enums.statuses.UserStatus;
 import com.pm.medicalwebsite.enums.UsersRoleTypes;
+import com.pm.medicalwebsite.enums.statuses.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -31,15 +33,19 @@ public class UsersEntity {
 
     private String phoneNumber;
 
+    @Column(name = "birthdate")
     private Instant birthDate;
 
     @Column(name = "avatar_id", nullable = true)
     private UUID avatarId;
 
-    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private UsersRoleTypes role;
 
-    @Column(name = "user_status")
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
     private Instant deletedAt;

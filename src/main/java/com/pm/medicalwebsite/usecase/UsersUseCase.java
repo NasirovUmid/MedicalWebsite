@@ -10,7 +10,6 @@ import com.pm.medicalwebsite.enums.fields.UsersFields;
 import com.pm.medicalwebsite.exceptions.AlreadyExistsException;
 import com.pm.medicalwebsite.security.user.UserCustomDetails;
 import com.pm.medicalwebsite.specifications.UsersSpecification;
-import com.pm.medicalwebsite.usecase.file.FileUseCase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -18,9 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,34 +28,20 @@ import java.util.UUID;
 public class UsersUseCase {
 
     private final UsersDatasource usersDatasource;
-    private final FileUseCase fileUseCase;
 
-    public UsersResponseDto createUser(CreateUserRequestDto userRequestDto, MultipartFile avatar) throws IOException {
+    public UsersResponseDto createUser(CreateUserRequestDto userRequestDto) {
 
         if (usersDatasource.existsByEmail(userRequestDto.email())) {
             throw new AlreadyExistsException(ErrorMessages.USER_ALREADY_EXISTS, userRequestDto.email());
         }
 
-        UsersEntity user = usersDatasource.save(userRequestDto);
+        if (usersDatasource.existsPhoneNumber(userRequestDto.phoneNumber())) {
+            throw new AlreadyExistsException(ErrorMessages.USER_ALREADY_EXISTS, userRequestDto.phoneNumber());
 
-        if (avatar != null && !avatar.isEmpty()) {
-            UUID avatarId = fileUseCase.saveAvatar(avatar, user.getId());
-
-            user.setAvatarId(avatarId);
-            usersDatasource.save(user);
         }
 
+        return usersDatasource.save(userRequestDto);
 
-        return new UsersResponseDto(user.getId(),
-                userRequestDto.fullName(),
-                userRequestDto.email(),
-                userRequestDto.phoneNumber(),
-                user.getBirthDate(),
-                user.getAvatarId(),
-                userRequestDto.role(),
-                userRequestDto.status(),
-                user.getDeletedAt(),
-                user.getCreatedAt());
     }
 
     public Page<UsersResponseDto> getUsersPage(int page, int size, String sort, @Valid UsersFilterDto usersFilterDto) {
@@ -67,7 +50,7 @@ public class UsersUseCase {
 
         Sort sorted = sortingUsers(sort);
 
-        return usersDatasource.getUsersPage(specification, PageRequest.of(size, page, sorted));
+        return usersDatasource.getUsersPage(specification, PageRequest.of(page, size, sorted));
     }
 
     public UsersResponseDto getUserById(UUID id) {

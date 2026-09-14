@@ -24,12 +24,13 @@ CREATE TYPE file_transfer_status as ENUM(
 
 CREATE TABLE files(
     id UUID PRIMARY KEY ,
+    appointment_id UUID NULL ,
+    user_id UUID NULL ,
     file_name VARCHAR NOT NULL ,
     storage_path VARCHAR NOT NULL ,
     type file_type NOT NULL ,
     purpose file_purpose NOT NULL ,
     size BIGINT NOT NULL ,
-    appointment_id uuid NULL ,
     uploaded_by  UUID NULL ,
     uploaded_at TIMESTAMP NOT NULL
 );

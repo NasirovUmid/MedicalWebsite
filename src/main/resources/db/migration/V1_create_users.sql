@@ -20,7 +20,7 @@ CREATE TABLE users(
     birthdate TIMESTAMP NOT NULL ,
     role user_role NOT NULL,
     status user_status NOT NULL,
-    deactivated_at TIMESTAMP NULL,
+    deleted_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT now()
 )
 

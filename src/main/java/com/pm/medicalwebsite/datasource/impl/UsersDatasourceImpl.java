@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -59,10 +60,10 @@ public class UsersDatasourceImpl implements UsersDatasource {
     }
 
     @Override
-    public UsersEntity save(CreateUserRequestDto userRequestDto) {
+    public UsersResponseDto save(CreateUserRequestDto userRequestDto) {
 
-        return usersDao.save(new UsersEntity(null, userRequestDto.fullName(), userRequestDto.email(), passwordEncoder.encode(userRequestDto.password()),
-                userRequestDto.phoneNumber(), userRequestDto.birthDate(), null, userRequestDto.role(), userRequestDto.status(), null, null));
+        return usersMapper.toDto(usersDao.save(new UsersEntity(null, userRequestDto.fullName(), userRequestDto.email(), passwordEncoder.encode(userRequestDto.password()),
+                userRequestDto.phoneNumber(), userRequestDto.birthDate(), null, userRequestDto.role(), userRequestDto.status(), null, Instant.now())));
     }
 
     @Override

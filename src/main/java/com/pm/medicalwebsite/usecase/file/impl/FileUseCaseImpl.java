@@ -5,10 +5,13 @@ import com.pm.medicalwebsite.dto.responsedtos.FilesResponseDto;
 import com.pm.medicalwebsite.entity.FilesEntity;
 import com.pm.medicalwebsite.enums.FilePurpose;
 import com.pm.medicalwebsite.enums.FileType;
+import com.pm.medicalwebsite.security.user.UserCustomDetails;
 import com.pm.medicalwebsite.usecase.file.FileUseCase;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +23,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,35 +36,22 @@ public class FileUseCaseImpl implements FileUseCase {
     private FilesDatasource filesDatasource;
 
     @Override
-    public UUID saveAvatar(MultipartFile avatar, UUID uploader) throws IOException {
+    public FilesResponseDto saveAvatar(MultipartFile avatar, UserCustomDetails userCustomDetails) throws IOException {
 
-        if (avatar.isEmpty()) {
-            return null;
-        }
-
-        LocalDate today = LocalDate.now();
-        Path root = Paths.get(storageUrl);
-
-
-        Path directory = root
-                .resolve(String.valueOf(today.getYear()))
-                .resolve(String.format("%02d", today.getMonthValue()))
-                .resolve(String.format("%02d", today.getDayOfMonth()));
-
-        Files.createDirectories(directory);
-
-        String fileName = extractExt(avatar);
-
-        Files.copy(avatar.getInputStream(), directory.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-
-        FilesEntity filesEntity = filesDatasource.save(new FilesEntity(null, fileName, directory.toString(), FileType.IMAGE, FilePurpose.AVATAR, (int) avatar.getSize(), uploader, Instant.now()));
-
-        return filesEntity.getId();
+        return saveFile(avatar, null, userCustomDetails.getUsersEntity().getId(), FilePurpose.AVATAR);
     }
 
     @Override
-    public List<FilesResponseDto> saveGalleryPhoto(List<MultipartFile> files, UUID userId) {
-        return null;
+    public List<FilesResponseDto> saveGalleryPhoto(List<MultipartFile> files, UUID userId) throws IOException {
+
+        List<FilesResponseDto> galleryPhotos = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+
+            galleryPhotos.add(saveFile(file, null, userId, FilePurpose.GALLERY));
+
+        }
+        return galleryPhotos;
     }
 
     @Override
@@ -103,8 +94,53 @@ public class FileUseCaseImpl implements FileUseCase {
 
     }
 
-    private FilesResponseDto save() {
-    return null;
+    private FilesResponseDto saveFile(MultipartFile multipartFile, UUID appointmentId, UUID userId, FilePurpose filePurpose) throws IOException {
+
+        if (multipartFile.isEmpty()) {
+            throw new BadRequestException();
+        }
+
+        LocalDate today = LocalDate.now();
+        Path root = Paths.get(storageUrl);
+
+
+        Path directory = root
+                .resolve(String.valueOf(today.getYear()))
+                .resolve(String.format("%02d", today.getMonthValue()))
+                .resolve(String.format("%02d", today.getDayOfMonth()));
+
+        FilesResponseDto filesResponseDto;
+
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        UserCustomDetails userCustomDetails =
+                (UserCustomDetails) authentication.getPrincipal();
+
+        UUID uploader = userCustomDetails.getUsersEntity().getId();
+
+        String fileName = extractExt(multipartFile);
+
+        FileType fileType = resolveFileType(multipartFile);
+
+        try {
+
+            Files.createDirectories(directory);
+
+            Files.copy(multipartFile.getInputStream(), directory.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+
+            filesResponseDto = filesDatasource.save(new FilesEntity(null, appointmentId, userId, fileName, directory.toString(), fileType, filePurpose, (int) multipartFile.getSize(), uploader, Instant.now()));
+        } catch (IOException e) {
+
+            removePhysicallyFile(fileName);
+
+            throw new IOException(e);
+        }
+
+        return filesResponseDto;
+
     }
 
     private FileType resolveFileType(MultipartFile file) throws BadRequestException {
@@ -118,8 +154,10 @@ public class FileUseCaseImpl implements FileUseCase {
         return switch (extension.toLowerCase()) {
 
             case "pdf" -> FileType.PDF;
-            case "jpg", "jpeg" -> FileType.IMAGE;
-            case "stl" -> FileType.STL;
+            case "jpg", "jpeg", "png", "webp" -> FileType.IMAGE;
+            case "zip", "rar", "7z" -> FileType.ARCHIVE;
+            case "stl", "obj", "ply", "3mf" -> FileType.MODEL_3D;
+            case "doc", "docx", "ppt", "pptx", "xls", "xlsx" -> FileType.DOCUMENT;
             default -> throw new BadRequestException();
         };
 

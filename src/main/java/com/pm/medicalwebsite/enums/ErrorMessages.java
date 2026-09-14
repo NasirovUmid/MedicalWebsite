@@ -12,10 +12,11 @@ public enum ErrorMessages {
     MEDICAL_RECORDS_NOT_FOUND("The medical record was not found"),
     REFRESH_TOKEN_NOT_FOUND("The refreshToken was not found"),
     FORM_043_NOT_FOUND("The form043 was not found"),
+    DAY_OF_WEEK_NOT_FOUND("The day of week not found"),
 
     USER_IS_DEACTIVATED("The User is Deactivated so action cant be done"),
 
-    USER_ALREADY_EXISTS("The email already exists"),
+    USER_ALREADY_EXISTS("The user already exists"),
 
     WRONG_CREDENTIALS("The Credentials are Wrong");
 

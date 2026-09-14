@@ -46,4 +46,9 @@ public class Form043DatasourceImpl implements Form043Datasource {
 
         return form043Mapper.toDto(form043Entity, usersResponseDto);
     }
+
+    @Override
+    public boolean existsByUserId(UUID userId) {
+        return form043Dao.existsByUserId(userId);
+    }
 }

@@ -36,4 +36,12 @@ public class Form043Controller {
 
         return ResponseEntity.ok().body(form043UseCase.getForm043ById(id));
     }
+
+    @GetMapping("/check-out/{userId}")
+    public ResponseEntity<Boolean> checkOut(@PathVariable(name = "userId") UUID userId) {
+
+        Boolean exists = form043UseCase.checkOut(userId);
+
+        return ResponseEntity.ok().body(exists);
+    }
 }

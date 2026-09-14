@@ -5,10 +5,14 @@ import com.pm.medicalwebsite.dto.responsedtos.Form043ResponseDto;
 import com.pm.medicalwebsite.dto.responsedtos.UsersResponseDto;
 import com.pm.medicalwebsite.entity.Form043Entity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface Form043Mapper {
 
+    @Mapping(target = "id",source = "form043Entity.id")
+    @Mapping(target = "fullName",source = "form043Entity.fullName")
+    @Mapping(target = "birthDate",source = "form043Entity.birthDate")
     Form043ResponseDto toDto(Form043Entity form043Entity, UsersResponseDto usersResponseDto);
 
     Form043Entity toEntity(CreateForm043Dto createForm043Dto);

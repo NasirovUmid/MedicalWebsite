@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Карточка пользователя — DentaVita</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="index.html"><b>+</b>Denta<em>Vita</em></a>
+        <nav class="nav">
+            <a href="admin.html">Админ-панель</a>
+            <a href="services.html">Услуги</a>
+            <a href="profile.html">Профиль</a>
+        </nav>
+        <div class="header-actions">
+            <button class="text-button" onclick="logout()">Выйти</button>
+        </div>
+    </header>
+    <main class="inner-page admin-page">
+        <section class="section">
+            <div class="section-header">
+                <button class="text-button" id="back-users">← К списку пользователей</button>
+            </div>
+            <div id="user-details-container">
+                <p>Загрузка карточки пользователя…</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <a class="logo" href="index.html"><b>+</b>Denta<em>Vita</em></a>
+        <span>© 2026 DentaVita · Ташкент</span>
+    </footer>
+    <script src="app.js"></script>
+    <script src="user-details.js"></script>
+</body>
+</html>

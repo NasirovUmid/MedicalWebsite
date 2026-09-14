@@ -1,11 +1,11 @@
-CREATE TYPE service_type as ENUM (
+CREATE TYPE services_type as ENUM (
     'ALIGNER',
     'BRACER',
     'SCAN',
     'CONSULTATION'
     );
 
-CREATE TYPE service_status as ENUM (
+CREATE TYPE services_status as ENUM (
     'ACTIVE',
     'DEACTIVATED'
     );
@@ -13,8 +13,8 @@ CREATE TYPE service_status as ENUM (
 CREATE TABLE services
 (
     id       UUID PRIMARY KEY,
-    type     service_type     NOT NULL,
-    status   service_status   NOT NULL DEFAULT 'ACTIVE',
+    type     services_type     NOT NULL,
+    status   services_status   NOT NULL DEFAULT 'ACTIVE',
     price    DOUBLE PRECISION NOT NULL,
     duration INTEGER          NOT NULL
 )

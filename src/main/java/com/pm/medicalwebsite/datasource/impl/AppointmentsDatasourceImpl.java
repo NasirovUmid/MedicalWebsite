@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -61,7 +62,7 @@ public class AppointmentsDatasourceImpl implements AppointmentsDatasource {
                 createAppointmentsRequestDto.serviceId(),
                 createAppointmentsRequestDto.appointmentDate(),
                 createAppointmentsRequestDto.status(),
-                null));
+                Instant.now()));
 
         return new AppointmentsResponseDto(
                 appointmentsEntity.getId(),

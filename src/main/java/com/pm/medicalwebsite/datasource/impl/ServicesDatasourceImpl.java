@@ -6,6 +6,7 @@ import com.pm.medicalwebsite.dto.requestdtos.CreateServiceRequestDto;
 import com.pm.medicalwebsite.dto.responsedtos.ServicesResponseDto;
 import com.pm.medicalwebsite.entity.ServicesEntity;
 import com.pm.medicalwebsite.enums.ServicesType;
+import com.pm.medicalwebsite.enums.statuses.ServicesStatus;
 import com.pm.medicalwebsite.mapper.ServicesMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class ServicesDatasourceImpl implements ServicesDatasource {
     @Override
     public ServicesResponseDto save(CreateServiceRequestDto requestDto) {
         return servicesMapper.toDto(servicesDao.save(new ServicesEntity(
-                null, requestDto.servicesType(), null, requestDto.price(), requestDto.durance()
+                null, requestDto.servicesType(), ServicesStatus.ACTIVE, requestDto.price(), requestDto.durance()
         )));
     }
 

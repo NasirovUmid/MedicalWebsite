@@ -6,6 +6,7 @@ import com.pm.medicalwebsite.dto.responsedtos.UsersResponseDto;
 import com.pm.medicalwebsite.security.user.UserCustomDetails;
 import com.pm.medicalwebsite.usecase.UsersUseCase;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
@@ -27,20 +28,20 @@ public class UsersController {
     private final UsersUseCase usersUseCase;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<UsersResponseDto> createUser(@Valid
-                                                       @RequestPart("data") CreateUserRequestDto userRequestDto,
-                                                       @RequestPart(value = "avatar", required = false) MultipartFile avatar) throws IOException {
+    public ResponseEntity<UsersResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto userRequestDto) throws IOException {
 
-        UsersResponseDto usersResponseDto = usersUseCase.createUser(userRequestDto, avatar);
+        UsersResponseDto usersResponseDto = usersUseCase.createUser(userRequestDto);
 
         return ResponseEntity.status(201).body(usersResponseDto);
     }
 
     @GetMapping
-    public Page<UsersResponseDto> getUserPage(@RequestParam(required = false, defaultValue = "0") int page,
-                                              @RequestParam(required = false, defaultValue = "10") int size,
-                                              @RequestParam(required = false, defaultValue = "fullName,asc") String sort,
+    public Page<UsersResponseDto> getUserPage(@RequestParam(defaultValue = "0", name = "page") int page,
+                                              @RequestParam(defaultValue = "10", name = "size") int size,
+                                              @RequestParam(defaultValue = "fullName,asc", name = "sort") String sort,
                                               @Valid @ModelAttribute UsersFilterDto usersFilterDto) {
+
+        System.out.println("asdfdsafdsgfdsgnkfdjhgkdsbgkjdshkgjdshlkgjdskhdslkhlgdsihlgdsh----- " + page + "   SIZE  " + size);
 
         return usersUseCase.getUsersPage(page, size, sort, usersFilterDto);
     }
@@ -49,6 +50,8 @@ public class UsersController {
     public ResponseEntity<UsersResponseDto> getUser(@PathVariable(name = "id") UUID id) {
 
         UsersResponseDto usersResponseDto = usersUseCase.getUserById(id);
+
+        System.out.println("USER = "+usersResponseDto.toString());
 
         return ResponseEntity.ok().body(usersResponseDto);
     }

@@ -12,4 +12,5 @@ public interface Form043Dao {
 
     Form043Entity getForm043ById(UUID id);
 
+    boolean existsByUserId(UUID userId);
 }

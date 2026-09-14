@@ -14,7 +14,7 @@ public record UsersResponseDto(
         Instant birthDate,
         UUID avatarId,
         UsersRoleTypes role,
-        UserStatus status,
+        UserStatus userStatus,
         Instant deletedAt,
         Instant createdAt
 ) {

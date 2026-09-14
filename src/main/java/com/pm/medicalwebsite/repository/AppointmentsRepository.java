@@ -22,7 +22,7 @@ public interface AppointmentsRepository extends JpaRepository<AppointmentsEntity
 
     Page<AppointmentsEntity> findAll(Specification<AppointmentsEntity> specification, Pageable pageable);
 
-    @Query(value = "SELECT * FROM appointments WHERE patient_id = :userId AND appointment_date > now() AND status = 'SCHEDULED'", nativeQuery = true)
+    @Query(value = "SELECT * FROM appointments WHERE patient_id = :userId AND appointment_date > now() AND status = 'SCHEDULED' ORDER BY appointment_date ASC LIMIT 1", nativeQuery = true)
     Optional<AppointmentsEntity> getUpcomingAppointment(@Param("userId") UUID userId);
 
     Page<AppointmentsEntity> getAppointmentsEntitiesByPatientId(UUID patientId, Pageable pageable);

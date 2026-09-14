@@ -12,4 +12,6 @@ public interface Form043Datasource {
     Form043ResponseDto getForm043ByUserId(UUID userId);
 
     Form043ResponseDto getForm043ById(UUID id);
+
+    boolean existsByUserId(UUID userId);
 }

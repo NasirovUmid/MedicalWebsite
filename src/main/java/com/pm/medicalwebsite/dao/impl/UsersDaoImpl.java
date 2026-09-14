@@ -46,12 +46,18 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public UsersEntity findById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+
+
+        UsersEntity usersEntity = userRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+
+        System.out.println("DAO STATUS  = " + usersEntity.getUserStatus() + "  BIRTHDATE = " + usersEntity.getBirthDate());
+
+        return usersEntity;
     }
 
     @Override
     public boolean existsPhoneNumber(String phoneNumber) {
-        return userRepository.existsPhoneNumber(phoneNumber);
+        return userRepository.existsByPhoneNumber(phoneNumber);
     }
 
     @Override
