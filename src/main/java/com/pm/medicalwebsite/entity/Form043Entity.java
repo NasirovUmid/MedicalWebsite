@@ -33,7 +33,7 @@ public class Form043Entity {
     private String fullName;
 
     @Column(nullable = false)
-    private String birthDate;
+    private Instant birthDate;
 
     @Column(nullable = false)
     private String address;
@@ -59,13 +59,13 @@ public class Form043Entity {
     @Column(nullable = false)
     private String personalHistory;
 
-    @Column(nullable = false)
+    @Column(name = "external_examination", nullable = false)
     private String externalExaminations;
 
     @Column(nullable = false)
     private String oralCavityAndTeeth;
 
-    @Column(nullable = false)
+    @Column(name = "condition_of_oral_mucosa_periodontium", nullable = false)
     private String conditionOfMucosaPeriodontium;
 
     @Column(nullable = false)

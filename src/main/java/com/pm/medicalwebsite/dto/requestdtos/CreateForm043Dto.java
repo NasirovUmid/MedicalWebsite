@@ -19,8 +19,8 @@ public record CreateForm043Dto(
         Instant observationEndDate,
         @NotBlank
         String fullName,
-        @NotBlank
-        String birthDate,
+        @NotNull
+        Instant birthDate,
         @NotBlank
         String address,
         @NotBlank

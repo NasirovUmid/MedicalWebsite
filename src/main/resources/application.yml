@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/medicalwebsite_db
     username: postgres
-    password: java
+    password: ${DB_PASSWORD:java}
     driver-class-name: org.postgresql.Driver
 
   jpa:

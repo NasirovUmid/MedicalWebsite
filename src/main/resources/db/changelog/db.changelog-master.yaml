@@ -19,6 +19,12 @@ databaseChangeLog:
   - include:
       file: db/migration/V7_create_schedules.sql
 
+  - include:
+      file: db/migration/V8_align_enums_with_java.sql
+
+  - include:
+      file: db/seed/dev_seed_data.sql
+
   - changeSet:
       id: 0
       author: admin

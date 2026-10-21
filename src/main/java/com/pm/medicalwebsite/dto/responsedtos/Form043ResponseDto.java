@@ -17,7 +17,7 @@ public record Form043ResponseDto(
 
         String fullName,
 
-        String birthDate,
+        Instant birthDate,
 
         String address,
 

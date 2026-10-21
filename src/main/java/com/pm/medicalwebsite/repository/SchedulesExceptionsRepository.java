@@ -17,12 +17,12 @@ public interface SchedulesExceptionsRepository extends JpaRepository<SchedulesEx
 
     SchedulesExceptionsEntity save(SchedulesExceptionsEntity schedulesExceptionsEntity);
 
-    @Query(value = "SELECT * FROM schedule_exceptions WHERE doctor_id = :doctorId AND exception_date >= CURRENT_DATE ORDER BY exception_date", nativeQuery = true)
+    @Query(value = "SELECT * FROM schedules_exceptions WHERE doctor_id = :doctorId AND exception_date >= CURRENT_DATE ORDER BY exception_date", nativeQuery = true)
     List<SchedulesExceptionsEntity> getUpcomingExceptions(UUID doctorId);
 
     Optional<SchedulesExceptionsEntity> getSchedulesExceptionsEntityById(UUID id);
 
     @Modifying
-    @Query(value = "UPDATE schedule_exception SET isDayOff = true WHERE id = :exceptionId", nativeQuery = true)
+    @Query(value = "UPDATE schedules_exceptions SET is_day_off = true WHERE id = :exceptionId", nativeQuery = true)
     void deactivateScheduleException(@Param("exceptionId") UUID exceptionId);
 }
